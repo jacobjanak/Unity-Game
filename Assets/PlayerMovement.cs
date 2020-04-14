@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public CharacterController2D controller;
+    public Animator animator;
 
     public float runSpeed = 40f;
 
@@ -19,16 +20,19 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalMove = Input.GetAxisRaw("Horizontal");
 
+        // animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+
         // Shift key flips direction
         if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
         {
             backpedal = true;
             controller.Flip();
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+
+        else if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
         {
             backpedal = false;
-            
+
             if (horizontalMove == 0)
             {
                 controller.Flip();
@@ -38,8 +42,8 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
+            // animator.SetBool("IsJumping", true);
         }
-
     }
 
     void FixedUpdate()
@@ -48,7 +52,19 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(movement, false, jump, backpedal);
 
+        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+
+        if (jump) {
+            animator.SetBool("IsJumping", true);
+            jump = false;
+        }
+
+
         // reset
-        jump = false;
+        
+    }
+
+    public void OnLanding() {
+        animator.SetBool("IsJumping", false);
     }
 }
