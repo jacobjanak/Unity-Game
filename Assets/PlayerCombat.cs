@@ -4,39 +4,49 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-
+    // connections to the view
     public Animator animator;
-
     public Transform attackPoint;
-    public float attackRange = 0.5f;
-    public int damage = 40;
-
     public LayerMask enemyLayers;
 
-    // Update is called once per frame
+    // customizations
+    public float attackRange = 0.5f;
+    public int attackDamage = 40;
+    public float attackRate = 2f; // per second
+
+    // keep track of state
+    float nextAttackTime = 0f;
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
+        // can only attack after a cooldown period
+        if (Time.time > nextAttackTime)
         {
-            Attack();
+            // attack key 1
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                Attack();
+                nextAttackTime = Time.time + 1f / attackRate;
+            }
         }
     }
 
     void Attack() {
-        // attack animation
+
+        // start attack animation
         animator.SetTrigger("Attack");
 
         // detect enemies
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
-        // apply damage
+        // apply damage to enemies
         foreach(Collider2D enemy in hitEnemies)
         {
-            enemy.GetComponent<Enemy>().TakeDamage(damage);
-            Debug.Log("hit!");
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
         }
     }
 
+    // method to allow easier editting in Unity
     void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
