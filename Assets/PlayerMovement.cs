@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
 
     // customizations
-    public float runSpeed;
+    public float runSpeed = 15f;
 
     // keep track of player state
     float horizontalMove = 0f;

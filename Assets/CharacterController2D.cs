@@ -3,15 +3,15 @@ using UnityEngine.Events;
 
 public class CharacterController2D : MonoBehaviour
 {
-	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
-	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
-	[SerializeField] private bool m_AirControl = false;							// Whether or not a player can steer while jumping;
-	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
-	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
-	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
+	public LayerMask m_WhatIsGround;						 // A mask determining what is ground to the character
+	public Transform m_GroundCheck;							 // A position marking where to check if the player is grounded.
+
+	public bool m_AirControl = false;						 // Whether or not a player can steer while jumping;
+	[Range(0, .3f)] public float m_MovementSmoothing = .05f; // How much to smooth out the movement
+	public float m_JumpForce = 400f;						 // Amount of force added when the player jumps.
 
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
-	private bool m_Grounded;            // Whether or not the player is grounded.
+	private bool m_Grounded = false; // Whether or not the player is grounded.
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
 	private Rigidbody2D m_Rigidbody2D;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
@@ -96,6 +96,11 @@ public class CharacterController2D : MonoBehaviour
 		transform.localScale = theScale;
 	}
 
+    public bool IsGrounded() {
+        return m_Grounded;
+    }
+
+    // helpful for editting the sprite in Unity
     void OnDrawGizmosSelected()
     {
         if (m_GroundCheck == null) return;

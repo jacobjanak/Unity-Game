@@ -8,15 +8,15 @@ public class Enemy : MonoBehaviour
     public Animator animator;
 
     // keep track of enemy state
-    int maxHealth = 100;
-    int currentHealth;
+    float maxHealth = 100f;
+    float currentHealth;
 
     void Start()
     {
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         // start the hurt animation
         animator.SetTrigger("Hurt");
@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
         // take damage
         currentHealth -= amount;
         Debug.Log("enemy health: " + currentHealth);
-        if (currentHealth <= 0)
+        if (currentHealth <= 0f)
         {
             Die();
         }
