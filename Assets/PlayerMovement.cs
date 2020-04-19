@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
 
     // customizations
     public float runSpeed = 15f;
+    public bool inputWasd = true;
+    public bool inputArrows = false;
 
     // keep track of player state
     float horizontalMove = 0f;
@@ -21,7 +23,38 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // which direction player is facing
-        horizontalMove = Input.GetAxisRaw("Horizontal");
+        if (inputWasd)
+        {
+            // set direction of movement
+            if (Input.GetKey(KeyCode.A))
+            {
+                horizontalMove = -1f;
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                horizontalMove = 1f;
+            }
+            else
+            {
+                horizontalMove = 0;
+            }
+        }
+        else if (inputArrows)
+        {
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                horizontalMove = -1f;
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                horizontalMove = 1f;
+            }
+            else
+            {
+                horizontalMove = 0;
+            }
+        }
+        // horizontalMove = Input.GetAxisRaw("Horizontal");
 
         // shift key flips direction
         if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
@@ -45,9 +78,19 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // jumping
-        if (Input.GetButtonDown("Jump"))
+        if (inputWasd)
         {
-            jump = true;
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                jump = true;
+            }
+        }
+        if (inputArrows)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                jump = true;
+            }
         }
     }
 
